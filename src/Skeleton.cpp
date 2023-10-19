@@ -125,8 +125,12 @@ void drawSquare(vec2 center, float size) {
 vec3 mapPoint(vec2 point, int view) {
     float x, y, z = -100;
     switch (view) {
-        case 0:
 
+        case 1:
+            x = point.x / sqrt(1 - point.x*point.x - point.y * point.y);
+            y = point.y / sqrt(1 - point.x*point.x - point.y * point.y);
+            z = 1 / sqrt(1 - point.x*point.x - point.y * point.y);
+            break;
         case 2:
             x = point.x;
             z = point.y+2;
@@ -146,6 +150,14 @@ vec3 mapPoint(vec2 point, int view) {
 vec2 projectPoint(vec3 point, int view) {
     float x, y = -100;
     switch (view) {
+        case 0:
+            x = point.x / (point.z + 1);
+            y = point.y / (point.z + 1);
+            break;
+        case 1:
+            x = point.x / point.z;
+            y = point.y / point.z;
+            break;
         case 2:
             if (point.y > 0) {
                 x = point.x;
@@ -197,19 +209,30 @@ void onDisplay() {
     setViewPort(0);
     drawCircle(circle_resolution);
 
+    glUniform3f(color_location, 0.0f, 0.0f, 1.0f);
+    for (int i = 0; i < userPoints.size(); i++) {
+        drawSquare(projectPoint(userPoints[i], 0), 0.05f);
+    }
+
     //Klein
     glUniform3f(color_location, 0.5f, 0.5f, 0.5f);
     setViewPort(1);
     drawCircle(circle_resolution);
+
+    glUniform3f(color_location, 0.0f, 0.0f, 1.0f);
+    for (int i = 0; i < userPoints.size(); i++) {
+        drawSquare(projectPoint(userPoints[i], 1), 0.05f);
+    }
 
     //Oldal
     glUniform3f(color_location, 0.5f, 0.5f, 0.5f);
     setViewPort(2);
     drawHiperbola(circle_resolution);
 
-    glUniform3f(color_location, 1.0f, 0.0f, 0.0f);
+    glUniform3f(color_location, 0.0f, 0.0f, 1.0f);
     for (int i = 0; i < userPoints.size(); i++) {
         drawSquare(projectPoint(userPoints[i], 2), 0.05f);
+        printf("%f, %f \n", projectPoint(userPoints[i], 2).x, projectPoint(userPoints[i], 2).y);
     }
 
     //Alul
@@ -217,10 +240,11 @@ void onDisplay() {
     setViewPort(3);
     drawSquare(vec2(0,0), 2);
 
-    glUniform3f(color_location, 1.0f, 0.0f, 0.0f);
+    glUniform3f(color_location, 0.0f, 0.0f, 1.0f);
     for (int i = 0; i < userPoints.size(); i++) {
         drawSquare(projectPoint(userPoints[i], 3), 0.05f);
     }
+
 
     glutSwapBuffers(); // exchange buffers for double buffering
 }
@@ -246,10 +270,6 @@ void onMouseMotion(int pX, int pY) {	// pX, pY are the pixel coordinates of the 
 
 // Mouse click event
 void onMouse(int button, int state, int pX, int pY) { // pX, pY are the pixel coordinates of the cursor in the coordinate system of the operation system
-    // Convert to normalized device space
-    float cX = 2.0f * pX / windowWidth - 1;	// flip y axis
-    float cY = 1.0f - 2.0f * pY / windowHeight;
-
     if (state == GLUT_DOWN) {
         float cX = 2.0f * pX / windowWidth - 1;
         float cY = 1.0f - 2.0f * pY / windowHeight; // flip y axis
@@ -264,7 +284,7 @@ void onMouse(int button, int state, int pX, int pY) { // pX, pY are the pixel co
             //view 1
             cX = 2 * cX - 1;
             cY = 2 * cY - 1;
-            printf("view 1\n");
+            userPoints.push_back(mapPoint(vec2(cX, cY), 1));
         }
         else if (cX <= 0 && cY <= 0) {
             //view 2
