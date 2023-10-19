@@ -1,5 +1,5 @@
 //=============================================================================================
-// Mintaprogram: Zöld háromszög. Ervenyes 2019. osztol.
+// Mintaprogram: Zold haromszog. Ervenyes 2019. osztol.
 //
 // A beadott program csak ebben a fajlban lehet, a fajl 1 byte-os ASCII karaktereket tartalmazhat, BOM kihuzando.
 // Tilos:
@@ -189,18 +189,18 @@ void onInitialization() {
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), NULL);
 
     gpuProgram.create(vertexSource, fragmentSource, "outColor");
-    glClearColor(0.8, 0.8, 0.8, 0); // background color | törlés színének beállítása
+    glClearColor(0.8, 0.8, 0.8, 0); // background color | torles szinenek beallitasa
 }
 
 
 // Window has become invalid: Redraw
 void onDisplay() {
-    glClear(GL_COLOR_BUFFER_BIT); // clear frame buffer | törlés
+    glClear(GL_COLOR_BUFFER_BIT); // clear frame buffer | torles
 
     int color_location = glGetUniformLocation(gpuProgram.getId(), "color");
     glUniform3f(color_location, 0.5f, 0.5f, 0.5f); // 3 floats
 
-    float MVPtransf[4][4] = { 1, 0, 0, 0,    // MVP matrix, | ignoráljuk
+    float MVPtransf[4][4] = { 1, 0, 0, 0,    // MVP matrix,
                               0, 1, 0, 0,    // row-major!
                               0, 0, 1, 0,
                               0, 0, 0, 1 };
@@ -208,7 +208,7 @@ void onDisplay() {
     int location = glGetUniformLocation(gpuProgram.getId(), "MVP");	// Get the GPU location of uniform variable MVP
     glUniformMatrix4fv(location, 1, GL_TRUE, &MVPtransf[0][0]);	// Load a 4x4 row-major float matrix to the specified location
 
-    //Poincaré
+    //Poincare
     glUniform3f(color_location, 0.5f, 0.5f, 0.5f);
     setViewPort(0);
     drawCircle(circle_resolution);
