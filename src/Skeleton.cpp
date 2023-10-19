@@ -125,7 +125,11 @@ void drawSquare(vec2 center, float size) {
 vec3 mapPoint(vec2 point, int view) {
     float x, y, z = -100;
     switch (view) {
-
+        case 0:
+            x = 2 * point.x / (1 - point.x * point.x - point.y * point.y);
+            y = 2 * point.y / (1 - point.x * point.x - point.y * point.y);
+            z = (point.x * point.x + point.y * point.y +1) / (1 - point.x * point.x - point.y * point.y);
+            break;
         case 1:
             x = point.x / sqrt(1 - point.x*point.x - point.y * point.y);
             y = point.y / sqrt(1 - point.x*point.x - point.y * point.y);
@@ -278,7 +282,7 @@ void onMouse(int button, int state, int pX, int pY) { // pX, pY are the pixel co
             //view 0
             cX = 2 * cX + 1;
             cY = 2 * cY - 1;
-            printf("view 0\n");
+            userPoints.push_back(mapPoint(vec2(cX, cY), 0));
         }
         else if (cX > 0 && cY > 0) {
             //view 1
