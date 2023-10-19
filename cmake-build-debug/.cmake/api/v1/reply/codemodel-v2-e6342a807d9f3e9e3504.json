@@ -1,0 +1,78 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.11"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "projekt_neve",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "glew::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-glew-Debug-deb4146ecd890fcda0dc.json",
+					"name" : "glew",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "glut::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-glut-Debug-a6b130ddacbd9c89c4bb.json",
+					"name" : "glut",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "program::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-program-Debug-ef97bf6581bf9a398d5f.json",
+					"name" : "program",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/Users/30bal/CLionProjects/grafika/cmake-build-debug",
+		"source" : "C:/Users/30bal/CLionProjects/grafika"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 4
+	}
+}
