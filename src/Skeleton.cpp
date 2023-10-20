@@ -347,8 +347,8 @@ void createLine(std::vector<vec3> coord3, int nVertices){
 
     std::vector<vec3> line;
     float x = 0,y = 0;
-    for (float i = -1; i < 1; i+=abs(v.x/nVertices)) {
-        x = i;
+    for (int i = 0; i < nVertices; i+=1) {
+        x = (float(i) / floor(float(nVertices)/2)) - 1;
         y = (n.x*coord2[0].x + n.y * coord2[0].y - n.x * x) / n.y;
         if(y>=-1 and y<=1) line.push_back(mapPoint(vec2(x, y), 1));
     }
