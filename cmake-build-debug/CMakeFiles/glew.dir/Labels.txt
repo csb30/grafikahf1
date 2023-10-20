@@ -1,13 +1,13 @@
 # Target labels
  glew
 # Source files and their labels
-C:/Users/30bal/CLionProjects/grafika/cmake-build-debug/CMakeFiles/glew
-C:/Users/30bal/CLionProjects/grafika/cmake-build-debug/CMakeFiles/glew.rule
-C:/Users/30bal/CLionProjects/grafika/cmake-build-debug/CMakeFiles/glew-complete.rule
-C:/Users/30bal/CLionProjects/grafika/cmake-build-debug/glew-prefix/src/glew-stamp/glew-build.rule
-C:/Users/30bal/CLionProjects/grafika/cmake-build-debug/glew-prefix/src/glew-stamp/glew-configure.rule
-C:/Users/30bal/CLionProjects/grafika/cmake-build-debug/glew-prefix/src/glew-stamp/glew-download.rule
-C:/Users/30bal/CLionProjects/grafika/cmake-build-debug/glew-prefix/src/glew-stamp/glew-install.rule
-C:/Users/30bal/CLionProjects/grafika/cmake-build-debug/glew-prefix/src/glew-stamp/glew-mkdir.rule
-C:/Users/30bal/CLionProjects/grafika/cmake-build-debug/glew-prefix/src/glew-stamp/glew-patch.rule
-C:/Users/30bal/CLionProjects/grafika/cmake-build-debug/glew-prefix/src/glew-stamp/glew-update.rule
+C:/Users/Balint/CLionProjects/grafikahf1/cmake-build-debug/CMakeFiles/glew
+C:/Users/Balint/CLionProjects/grafikahf1/cmake-build-debug/CMakeFiles/glew.rule
+C:/Users/Balint/CLionProjects/grafikahf1/cmake-build-debug/CMakeFiles/glew-complete.rule
+C:/Users/Balint/CLionProjects/grafikahf1/cmake-build-debug/glew-prefix/src/glew-stamp/glew-build.rule
+C:/Users/Balint/CLionProjects/grafikahf1/cmake-build-debug/glew-prefix/src/glew-stamp/glew-configure.rule
+C:/Users/Balint/CLionProjects/grafikahf1/cmake-build-debug/glew-prefix/src/glew-stamp/glew-download.rule
+C:/Users/Balint/CLionProjects/grafikahf1/cmake-build-debug/glew-prefix/src/glew-stamp/glew-install.rule
+C:/Users/Balint/CLionProjects/grafikahf1/cmake-build-debug/glew-prefix/src/glew-stamp/glew-mkdir.rule
+C:/Users/Balint/CLionProjects/grafikahf1/cmake-build-debug/glew-prefix/src/glew-stamp/glew-patch.rule
+C:/Users/Balint/CLionProjects/grafikahf1/cmake-build-debug/glew-prefix/src/glew-stamp/glew-update.rule

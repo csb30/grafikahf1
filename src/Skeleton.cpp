@@ -67,6 +67,7 @@ std::vector<vec3> stack;
 std::vector<vec3> points;
 std::vector<std::vector<vec3>> lines;
 std::vector<std::vector<vec3>> circles;
+std::vector<vec3> red;
 
 void setViewPort(int view) {
     switch (view) {
@@ -126,7 +127,7 @@ void drawSquare(vec2 center, float size) {
 }
 
 vec3 mapPoint(vec2 point, int view) {
-    float x, y, z = -100;
+    float x = -100, y = -100, z = -100;
     switch (view) {
         case 0:
             x = 2 * point.x / (1 - point.x * point.x - point.y * point.y);
@@ -155,7 +156,7 @@ vec3 mapPoint(vec2 point, int view) {
 }
 
 vec2 projectPoint(vec3 point, int view) {
-    float x, y = -100;
+    float x = -100, y = -100;
     switch (view) {
         case 0:
             x = point.x / (point.z + 1);
@@ -182,14 +183,15 @@ vec2 projectPoint(vec3 point, int view) {
 }
 
 void drawLine(std::vector<vec3> line3, int view){
-    std::vector<vec2> line2(line3.size());
+    std::vector<vec2> line2;
     for(int i=0; i < line3.size(); i++){
-        line2[i]= projectPoint(line3[i],view);
+        if (projectPoint(line3[i],view).x != -100)
+        line2.push_back(projectPoint(line3[i],view));
     }
 
     int nBytes = line2.size() * sizeof(vec2);
     glBufferData(GL_ARRAY_BUFFER, nBytes, line2.data(), GL_STATIC_DRAW);
-    glDrawArrays(GL_LINE, 0, 4);
+    glDrawArrays(GL_LINE_STRIP, 0, line2.size());
 }
 
 void onInitialization() {
@@ -219,6 +221,12 @@ void drawPoincare() {
         drawSquare(projectPoint(stack[i], 0), 0.05f);
     }
 
+    //red
+    glUniform3f(color_location, 1.0f, 0.0f, 0.0f);
+    for (int i = 0; i < red.size(); i++) {
+        drawSquare(projectPoint(red[i], 0), 0.05f);
+    }
+
     //points
     glUniform3f(color_location, 1.0f, 0.0f, 0.0f);
     for (int i = 0; i < points.size(); i++) {
@@ -245,10 +253,22 @@ void drawKlein(){
         drawSquare(projectPoint(stack[i], 1), 0.05f);
     }
 
+    //red
+    glUniform3f(color_location, 1.0f, 0.0f, 0.0f);
+    for (int i = 0; i < red.size(); i++) {
+        drawSquare(projectPoint(red[i], 1), 0.05f);
+    }
+
     //points
     glUniform3f(color_location, 1.0f, 0.0f, 0.0f);
     for (int i = 0; i < points.size(); i++) {
         drawSquare(projectPoint(points[i], 1), 0.05f);
+    }
+
+    //lines
+    glUniform3f(color_location, 1.0f, 1.0f, 1.0f);
+    for (int i = 0; i < lines.size(); i++) {
+        drawLine(lines[i], 1);
     }
 }
 
@@ -265,10 +285,22 @@ void drawSide(){
         drawSquare(projectPoint(stack[i], 2), 0.05f);
     }
 
+    //red
+    glUniform3f(color_location, 1.0f, 0.0f, 0.0f);
+    for (int i = 0; i < red.size(); i++) {
+        drawSquare(projectPoint(red[i], 2), 0.05f);
+    }
+
     //points
     glUniform3f(color_location, 1.0f, 0.0f, 0.0f);
     for (int i = 0; i < points.size(); i++) {
         drawSquare(projectPoint(points[i], 2), 0.05f);
+    }
+
+    //lines
+    glUniform3f(color_location, 1.0f, 1.0f, 1.0f);
+    for (int i = 0; i < lines.size(); i++) {
+        drawLine(lines[i], 2);
     }
 }
 
@@ -285,27 +317,40 @@ void drawBottom() {
         drawSquare(projectPoint(stack[i], 3), 0.05f);
     }
 
+    //red
+    glUniform3f(color_location, 1.0f, 0.0f, 0.0f);
+    for (int i = 0; i < red.size(); i++) {
+        drawSquare(projectPoint(red[i], 3), 0.05f);
+    }
+
     //points
     glUniform3f(color_location, 1.0f, 0.0f, 0.0f);
     for (int i = 0; i < points.size(); i++) {
         drawSquare(projectPoint(points[i], 3), 0.05f);
     }
+
+    //lines
+    glUniform3f(color_location, 1.0f, 1.0f, 1.0f);
+    for (int i = 0; i < lines.size(); i++) {
+        drawLine(lines[i], 3);
+    }
 }
 
 void createLine(std::vector<vec3> coord3, int nVertices){
-    std::vector<vec2> coord2;
+    std::vector<vec2> coord2(2);
     coord2[0] = projectPoint(coord3[0], 1);
     coord2[1] = projectPoint(coord3[1], 1);
 
     vec2 v = vec2(coord2[0].x-coord2[1].x, coord2[0].y - coord2[1].y);
+
     vec2 n = vec2(v.y, -v.x);
 
     std::vector<vec3> line;
-    float x,y;
-    for (int i = 0; i < nVertices; i++) {
-        x = (float(i) / floor(float(nVertices)/2)) - 1;
+    float x = 0,y = 0;
+    for (float i = -1; i < 1; i+=abs(v.x/nVertices)) {
+        x = i;
         y = (n.x*coord2[0].x + n.y * coord2[0].y - n.x * x) / n.y;
-        line.push_back(mapPoint(vec2(x,y), 1));
+        if(y>=-1 and y<=1) line.push_back(mapPoint(vec2(x, y), 1));
     }
     lines.push_back(line);
 }
@@ -390,29 +435,39 @@ void onMouse(int button, int state, int pX, int pY) { // pX, pY are the pixel co
             cY = 2 * cY + 1;
             stack.push_back(mapPoint(vec2(cX, cY), 3));
         }
-        /*
+
         if(button == GLUT_RIGHT_BUTTON){
             if(stack.size() == 1){
                 points.push_back(stack[stack.size()-1]);
+                red.push_back(stack[stack.size()-1]);
                 stack.pop_back();
             } else if (stack.size() == 2){
                 std::vector<vec3> line;
                 line.push_back(stack[stack.size()-1]);
+                red.push_back(stack[stack.size()-1]);
                 stack.pop_back();
+
                 line.push_back(stack[stack.size()-1]);
+                red.push_back(stack[stack.size()-1]);
                 stack.pop_back();
+
                 createLine(line,circle_resolution);
             } else if (stack.size() >= 3){
                 std::vector<vec3> circle;
                 circle.push_back(stack[stack.size()-1]);
+                red.push_back(stack[stack.size()-1]);
                 stack.pop_back();
+
                 circle.push_back(stack[stack.size()-1]);
+                red.push_back(stack[stack.size()-1]);
                 stack.pop_back();
+
                 circle.push_back(stack[stack.size()-1]);
+                red.push_back(stack[stack.size()-1]);
                 stack.pop_back();
             }
         }
-        */
+
     }
 }
 
