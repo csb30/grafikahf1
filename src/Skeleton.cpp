@@ -63,7 +63,10 @@ GPUProgram gpuProgram; // vertex and fragment shaders
 unsigned int vao;
 unsigned int vbo;
 const int circle_resolution = 15;
-std::vector<vec3> userPoints;
+std::vector<vec3> stack;
+std::vector<vec3> points;
+std::vector<std::vector<vec3>> lines;
+std::vector<std::vector<vec3>> circles;
 
 void setViewPort(int view) {
     switch (view) {
@@ -178,6 +181,17 @@ vec2 projectPoint(vec3 point, int view) {
     return vec2(x, y);
 }
 
+void drawLine(std::vector<vec3> line3, int view){
+    std::vector<vec2> line2(line3.size());
+    for(int i=0; i < line3.size(); i++){
+        line2[i]= projectPoint(line3[i],view);
+    }
+
+    int nBytes = line2.size() * sizeof(vec2);
+    glBufferData(GL_ARRAY_BUFFER, nBytes, line2.data(), GL_STATIC_DRAW);
+    glDrawArrays(GL_LINE, 0, 4);
+}
+
 void onInitialization() {
     glViewport(0, 0, windowWidth, windowHeight);
 
@@ -190,6 +204,110 @@ void onInitialization() {
 
     gpuProgram.create(vertexSource, fragmentSource, "outColor");
     glClearColor(0.8, 0.8, 0.8, 0); // background color | torles szinenek beallitasa
+}
+
+void drawPoincare() {
+    int color_location = glGetUniformLocation(gpuProgram.getId(), "color");
+
+    glUniform3f(color_location, 0.5f, 0.5f, 0.5f);
+    setViewPort(0);
+    drawCircle(circle_resolution);
+
+    //stack
+    glUniform3f(color_location, 0.0f, 0.0f, 1.0f);
+    for (int i = 0; i < stack.size(); i++) {
+        drawSquare(projectPoint(stack[i], 0), 0.05f);
+    }
+
+    //points
+    glUniform3f(color_location, 1.0f, 0.0f, 0.0f);
+    for (int i = 0; i < points.size(); i++) {
+        drawSquare(projectPoint(points[i], 0), 0.05f);
+    }
+
+    //lines
+    glUniform3f(color_location, 1.0f, 1.0f, 1.0f);
+    for (int i = 0; i < lines.size(); i++) {
+        drawLine(lines[i], 0);
+    }
+}
+
+void drawKlein(){
+    int color_location = glGetUniformLocation(gpuProgram.getId(), "color");
+
+    glUniform3f(color_location, 0.5f, 0.5f, 0.5f);
+    setViewPort(1);
+    drawCircle(circle_resolution);
+
+    //stack
+    glUniform3f(color_location, 0.0f, 0.0f, 1.0f);
+    for (int i = 0; i < stack.size(); i++) {
+        drawSquare(projectPoint(stack[i], 1), 0.05f);
+    }
+
+    //points
+    glUniform3f(color_location, 1.0f, 0.0f, 0.0f);
+    for (int i = 0; i < points.size(); i++) {
+        drawSquare(projectPoint(points[i], 1), 0.05f);
+    }
+}
+
+void drawSide(){
+    int color_location = glGetUniformLocation(gpuProgram.getId(), "color");
+
+    glUniform3f(color_location, 0.5f, 0.5f, 0.5f);
+    setViewPort(2);
+    drawHiperbola(circle_resolution);
+
+    //stack
+    glUniform3f(color_location, 0.0f, 0.0f, 1.0f);
+    for (int i = 0; i < stack.size(); i++) {
+        drawSquare(projectPoint(stack[i], 2), 0.05f);
+    }
+
+    //points
+    glUniform3f(color_location, 1.0f, 0.0f, 0.0f);
+    for (int i = 0; i < points.size(); i++) {
+        drawSquare(projectPoint(points[i], 2), 0.05f);
+    }
+}
+
+void drawBottom() {
+    int color_location = glGetUniformLocation(gpuProgram.getId(), "color");
+
+    glUniform3f(color_location, 0.5f, 0.5f, 0.5f);
+    setViewPort(3);
+    drawSquare(vec2(0,0), 2);
+
+    //stack
+    glUniform3f(color_location, 0.0f, 0.0f, 1.0f);
+    for (int i = 0; i < stack.size(); i++) {
+        drawSquare(projectPoint(stack[i], 3), 0.05f);
+    }
+
+    //points
+    glUniform3f(color_location, 1.0f, 0.0f, 0.0f);
+    for (int i = 0; i < points.size(); i++) {
+        drawSquare(projectPoint(points[i], 3), 0.05f);
+    }
+}
+
+void createLine(std::vector<vec3> coord3, int nVertices){
+    std::vector<vec2> coord2;
+    coord2[0] = projectPoint(coord3[0], 1);
+    coord2[1] = projectPoint(coord3[1], 1);
+
+    vec2 v = vec2(coord2[0].x-coord2[1].x, coord2[0].y - coord2[1].y);
+    vec2 n = vec2(v.y, -v.x);
+
+    std::vector<vec3> line;
+    float x,y;
+    for (int i = 0; i < nVertices; i++) {
+        x = (float(i) / floor(float(nVertices)/2)) - 1;
+        y = (n.x*coord2[0].x + n.y * coord2[0].y - n.x * x) / n.y;
+        line.push_back(mapPoint(vec2(x,y), 1));
+    }
+    lines.push_back(line);
 }
 
 
@@ -208,46 +326,13 @@ void onDisplay() {
     int location = glGetUniformLocation(gpuProgram.getId(), "MVP");	// Get the GPU location of uniform variable MVP
     glUniformMatrix4fv(location, 1, GL_TRUE, &MVPtransf[0][0]);	// Load a 4x4 row-major float matrix to the specified location
 
-    //Poincare
-    glUniform3f(color_location, 0.5f, 0.5f, 0.5f);
-    setViewPort(0);
-    drawCircle(circle_resolution);
+    drawPoincare();
 
-    glUniform3f(color_location, 0.0f, 0.0f, 1.0f);
-    for (int i = 0; i < userPoints.size(); i++) {
-        drawSquare(projectPoint(userPoints[i], 0), 0.05f);
-    }
+    drawKlein();
 
-    //Klein
-    glUniform3f(color_location, 0.5f, 0.5f, 0.5f);
-    setViewPort(1);
-    drawCircle(circle_resolution);
+    drawSide();
 
-    glUniform3f(color_location, 0.0f, 0.0f, 1.0f);
-    for (int i = 0; i < userPoints.size(); i++) {
-        drawSquare(projectPoint(userPoints[i], 1), 0.05f);
-    }
-
-    //Oldal
-    glUniform3f(color_location, 0.5f, 0.5f, 0.5f);
-    setViewPort(2);
-    drawHiperbola(circle_resolution);
-
-    glUniform3f(color_location, 0.0f, 0.0f, 1.0f);
-    for (int i = 0; i < userPoints.size(); i++) {
-        drawSquare(projectPoint(userPoints[i], 2), 0.05f);
-        printf("%f, %f \n", projectPoint(userPoints[i], 2).x, projectPoint(userPoints[i], 2).y);
-    }
-
-    //Alul
-    glUniform3f(color_location, 0.5f, 0.5f, 0.5f);
-    setViewPort(3);
-    drawSquare(vec2(0,0), 2);
-
-    glUniform3f(color_location, 0.0f, 0.0f, 1.0f);
-    for (int i = 0; i < userPoints.size(); i++) {
-        drawSquare(projectPoint(userPoints[i], 3), 0.05f);
-    }
+    drawBottom();
 
 
     glutSwapBuffers(); // exchange buffers for double buffering
@@ -274,7 +359,7 @@ void onMouseMotion(int pX, int pY) {	// pX, pY are the pixel coordinates of the 
 
 // Mouse click event
 void onMouse(int button, int state, int pX, int pY) { // pX, pY are the pixel coordinates of the cursor in the coordinate system of the operation system
-    if (state == GLUT_DOWN) {
+    if (state == GLUT_DOWN && button!=GLUT_MIDDLE_BUTTON) {
         float cX = 2.0f * pX / windowWidth - 1;
         float cY = 1.0f - 2.0f * pY / windowHeight; // flip y axis
 
@@ -282,41 +367,53 @@ void onMouse(int button, int state, int pX, int pY) { // pX, pY are the pixel co
             //view 0
             cX = 2 * cX + 1;
             cY = 2 * cY - 1;
-            userPoints.push_back(mapPoint(vec2(cX, cY), 0));
+            if (cX * cX + cY * cY >= 1) return;
+            stack.push_back(mapPoint(vec2(cX, cY), 0));
         }
         else if (cX > 0 && cY > 0) {
             //view 1
             cX = 2 * cX - 1;
             cY = 2 * cY - 1;
-            userPoints.push_back(mapPoint(vec2(cX, cY), 1));
+            if (cX * cX + cY * cY >= 1) return;
+            stack.push_back(mapPoint(vec2(cX, cY), 1));
         }
         else if (cX <= 0 && cY <= 0) {
             //view 2
             cX = 2 * cX + 1;
             cY = 2 * cY + 1;
-            userPoints.push_back(mapPoint(vec2(cX, cY), 2));
+            if (cY <  sqrt(1.0f + cX * cX) - 2) return;
+            stack.push_back(mapPoint(vec2(cX, cY), 2));
         }
         else {
             //view 3
             cX = 2 * cX - 1;
             cY = 2 * cY + 1;
-            userPoints.push_back(mapPoint(vec2(cX, cY), 3));
+            stack.push_back(mapPoint(vec2(cX, cY), 3));
         }
+        /*
+        if(button == GLUT_RIGHT_BUTTON){
+            if(stack.size() == 1){
+                points.push_back(stack[stack.size()-1]);
+                stack.pop_back();
+            } else if (stack.size() == 2){
+                std::vector<vec3> line;
+                line.push_back(stack[stack.size()-1]);
+                stack.pop_back();
+                line.push_back(stack[stack.size()-1]);
+                stack.pop_back();
+                createLine(line,circle_resolution);
+            } else if (stack.size() >= 3){
+                std::vector<vec3> circle;
+                circle.push_back(stack[stack.size()-1]);
+                stack.pop_back();
+                circle.push_back(stack[stack.size()-1]);
+                stack.pop_back();
+                circle.push_back(stack[stack.size()-1]);
+                stack.pop_back();
+            }
+        }
+        */
     }
-
-    /*
-    char * buttonStat;
-    switch (state) {
-    case GLUT_DOWN: buttonStat = "pressed"; break;
-    case GLUT_UP:   buttonStat = "released"; break;
-    }
-
-    switch (button) {
-    case GLUT_LEFT_BUTTON:   printf("Left button %s at (%3.2f, %3.2f)\n", buttonStat, cX, cY);   break;
-    case GLUT_MIDDLE_BUTTON: printf("Middle button %s at (%3.2f, %3.2f)\n", buttonStat, cX, cY); break;
-    case GLUT_RIGHT_BUTTON:  printf("Right button %s at (%3.2f, %3.2f)\n", buttonStat, cX, cY);  break;
-    }
-    */
 }
 
 // Idle event indicating that some time elapsed: do animation here
