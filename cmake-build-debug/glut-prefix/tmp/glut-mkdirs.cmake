@@ -4,19 +4,19 @@
 cmake_minimum_required(VERSION 3.5)
 
 file(MAKE_DIRECTORY
-  "C:/Users/30bal/CLionProjects/grafika/src/freeglut"
-  "C:/Users/30bal/CLionProjects/grafika/cmake-build-debug/glut-prefix/src/glut-build"
-  "C:/Users/30bal/CLionProjects/grafika/cmake-build-debug/glut-prefix"
-  "C:/Users/30bal/CLionProjects/grafika/cmake-build-debug/glut-prefix/tmp"
-  "C:/Users/30bal/CLionProjects/grafika/cmake-build-debug/glut-prefix/src/glut-stamp"
-  "C:/Users/30bal/CLionProjects/grafika/cmake-build-debug/glut-prefix/src"
-  "C:/Users/30bal/CLionProjects/grafika/cmake-build-debug/glut-prefix/src/glut-stamp"
+  "C:/Users/Balint/CLionProjects/grafikahf1/src/freeglut"
+  "C:/Users/Balint/CLionProjects/grafikahf1/cmake-build-debug/glut-prefix/src/glut-build"
+  "C:/Users/Balint/CLionProjects/grafikahf1/cmake-build-debug/glut-prefix"
+  "C:/Users/Balint/CLionProjects/grafikahf1/cmake-build-debug/glut-prefix/tmp"
+  "C:/Users/Balint/CLionProjects/grafikahf1/cmake-build-debug/glut-prefix/src/glut-stamp"
+  "C:/Users/Balint/CLionProjects/grafikahf1/cmake-build-debug/glut-prefix/src"
+  "C:/Users/Balint/CLionProjects/grafikahf1/cmake-build-debug/glut-prefix/src/glut-stamp"
 )
 
 set(configSubDirs )
 foreach(subDir IN LISTS configSubDirs)
-    file(MAKE_DIRECTORY "C:/Users/30bal/CLionProjects/grafika/cmake-build-debug/glut-prefix/src/glut-stamp/${subDir}")
+    file(MAKE_DIRECTORY "C:/Users/Balint/CLionProjects/grafikahf1/cmake-build-debug/glut-prefix/src/glut-stamp/${subDir}")
 endforeach()
 if(cfgdir)
-  file(MAKE_DIRECTORY "C:/Users/30bal/CLionProjects/grafika/cmake-build-debug/glut-prefix/src/glut-stamp${cfgdir}") # cfgdir has leading slash
+  file(MAKE_DIRECTORY "C:/Users/Balint/CLionProjects/grafikahf1/cmake-build-debug/glut-prefix/src/glut-stamp${cfgdir}") # cfgdir has leading slash
 endif()

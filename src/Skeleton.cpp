@@ -342,8 +342,8 @@ void createLine(std::vector<vec3> coord3, int nVertices){
     coord2[1] = projectPoint(coord3[1], 1);
 
     vec2 v = vec2(coord2[0].x-coord2[1].x, coord2[0].y - coord2[1].y);
-
     vec2 n = vec2(v.y, -v.x);
+    if (n.y==0) n.y+=0.1;
 
     std::vector<vec3> line;
     float x = 0,y = 0;

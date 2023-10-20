@@ -5,8 +5,8 @@ cmake_minimum_required(VERSION 3.5)
 
 # Make file names absolute:
 #
-get_filename_component(filename "C:/Users/30bal/CLionProjects/grafika/cmake-build-debug/glew-prefix/src/glew-2.1.0-win32.zip" ABSOLUTE)
-get_filename_component(directory "C:/Users/30bal/CLionProjects/grafika/src/glew" ABSOLUTE)
+get_filename_component(filename "C:/Users/Balint/CLionProjects/grafikahf1/cmake-build-debug/glew-prefix/src/glew-2.1.0-win32.zip" ABSOLUTE)
+get_filename_component(directory "C:/Users/Balint/CLionProjects/grafikahf1/src/glew" ABSOLUTE)
 
 message(STATUS "extracting...
      src='${filename}'

@@ -5,8 +5,8 @@ cmake_minimum_required(VERSION 3.5)
 
 # Make file names absolute:
 #
-get_filename_component(filename "C:/Users/30bal/CLionProjects/grafika/cmake-build-debug/glut-prefix/src/freeglut-MinGW.zip" ABSOLUTE)
-get_filename_component(directory "C:/Users/30bal/CLionProjects/grafika/src/freeglut" ABSOLUTE)
+get_filename_component(filename "C:/Users/Balint/CLionProjects/grafikahf1/cmake-build-debug/glut-prefix/src/freeglut-MinGW.zip" ABSOLUTE)
+get_filename_component(directory "C:/Users/Balint/CLionProjects/grafikahf1/src/freeglut" ABSOLUTE)
 
 message(STATUS "extracting...
      src='${filename}'

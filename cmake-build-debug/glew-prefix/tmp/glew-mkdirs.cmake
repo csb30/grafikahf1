@@ -4,19 +4,19 @@
 cmake_minimum_required(VERSION 3.5)
 
 file(MAKE_DIRECTORY
-  "C:/Users/30bal/CLionProjects/grafika/src/glew"
-  "C:/Users/30bal/CLionProjects/grafika/cmake-build-debug/glew-prefix/src/glew-build"
-  "C:/Users/30bal/CLionProjects/grafika/cmake-build-debug/glew-prefix"
-  "C:/Users/30bal/CLionProjects/grafika/cmake-build-debug/glew-prefix/tmp"
-  "C:/Users/30bal/CLionProjects/grafika/cmake-build-debug/glew-prefix/src/glew-stamp"
-  "C:/Users/30bal/CLionProjects/grafika/cmake-build-debug/glew-prefix/src"
-  "C:/Users/30bal/CLionProjects/grafika/cmake-build-debug/glew-prefix/src/glew-stamp"
+  "C:/Users/Balint/CLionProjects/grafikahf1/src/glew"
+  "C:/Users/Balint/CLionProjects/grafikahf1/cmake-build-debug/glew-prefix/src/glew-build"
+  "C:/Users/Balint/CLionProjects/grafikahf1/cmake-build-debug/glew-prefix"
+  "C:/Users/Balint/CLionProjects/grafikahf1/cmake-build-debug/glew-prefix/tmp"
+  "C:/Users/Balint/CLionProjects/grafikahf1/cmake-build-debug/glew-prefix/src/glew-stamp"
+  "C:/Users/Balint/CLionProjects/grafikahf1/cmake-build-debug/glew-prefix/src"
+  "C:/Users/Balint/CLionProjects/grafikahf1/cmake-build-debug/glew-prefix/src/glew-stamp"
 )
 
 set(configSubDirs )
 foreach(subDir IN LISTS configSubDirs)
-    file(MAKE_DIRECTORY "C:/Users/30bal/CLionProjects/grafika/cmake-build-debug/glew-prefix/src/glew-stamp/${subDir}")
+    file(MAKE_DIRECTORY "C:/Users/Balint/CLionProjects/grafikahf1/cmake-build-debug/glew-prefix/src/glew-stamp/${subDir}")
 endforeach()
 if(cfgdir)
-  file(MAKE_DIRECTORY "C:/Users/30bal/CLionProjects/grafika/cmake-build-debug/glew-prefix/src/glew-stamp${cfgdir}") # cfgdir has leading slash
+  file(MAKE_DIRECTORY "C:/Users/Balint/CLionProjects/grafikahf1/cmake-build-debug/glew-prefix/src/glew-stamp${cfgdir}") # cfgdir has leading slash
 endif()
